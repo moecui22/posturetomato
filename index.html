@@ -79,11 +79,62 @@ footer a{color:var(--soft)}
   .faq{grid-template-columns:1fr}
   header{padding:60px 0 40px}
 }
+
+/* ---- motion ---- */
+/* The hero icon breathes on the app's own rhythm: five seconds in, five out.
+   Six breaths a minute, the pace slow-breathing practice settles on — the same
+   cycle the halo uses inside the app. */
+@keyframes breathe{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.045)}
+}
+@keyframes haloPulse{
+  0%,100%{opacity:.34;transform:translate(-50%,-50%) scale(1)}
+  50%{opacity:.62;transform:translate(-50%,-50%) scale(1.16)}
+}
+.iconwrap{position:relative;display:inline-block}
+.iconwrap:before{content:"";position:absolute;left:50%;top:50%;
+  width:190px;height:190px;border-radius:50%;
+  background:radial-gradient(circle,var(--halo),transparent 66%);
+  transform:translate(-50%,-50%);animation:haloPulse 10s ease-in-out infinite;
+  pointer-events:none}
+.icon{animation:breathe 10s ease-in-out infinite;will-change:transform}
+
+/* Scroll reveal — content rises into place once, never on the way back. */
+.reveal{opacity:0;transform:translateY(22px);
+  transition:opacity .7s cubic-bezier(.2,.7,.3,1),transform .7s cubic-bezier(.2,.7,.3,1)}
+.reveal.in{opacity:1;transform:none}
+.row.reveal .shot{transition-delay:.06s}
+
+/* The mirroring shot follows your cursor, because that is the feature. */
+.mirror{perspective:1100px}
+.mirror img{transform:rotate(var(--rot,0deg)) translateY(var(--dy,0px))
+                      scale(var(--sc,1));
+  transition:transform .5s cubic-bezier(.2,.8,.3,1);will-change:transform}
+.mirror.live img{transition:transform .12s linear}
+.hint{margin-top:12px;font-size:.83rem;color:var(--soft);
+  display:flex;align-items:center;gap:7px}
+.hint b{font-weight:650;color:var(--tomato)}
+@keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
+.hint span.arrow{animation:nudge 1.5s ease-in-out infinite}
+
+.cta{transition:transform .18s cubic-bezier(.2,.8,.3,1),background .18s}
+.cta:hover{transform:translateY(-2px)}
+.cta:active{transform:translateY(0)}
+.shot img{transition:transform .5s cubic-bezier(.2,.8,.3,1)}
+.row:not(:has(.mirror)) .shot img:hover{transform:translateY(-6px)}
+
+/* Anyone who has asked the system for less motion gets none of it. */
+@media (prefers-reduced-motion:reduce){
+  .icon,.iconwrap:before,.hint span.arrow{animation:none}
+  .reveal{opacity:1;transform:none;transition:none}
+  .mirror img,.shot img,.cta{transition:none}
+}
 </style></head><body>
 
 <header>
   <div class="wrap">
-    <img class="icon" src="img/icon.png" alt="PostureTomato app icon">
+    <span class="iconwrap"><img class="icon" src="img/icon.png" alt="PostureTomato app icon"></span>
     <h1>A focus timer that<br>sits up straight.</h1>
     <p class="tag">Wear AirPods. Settle in. Watch the fruit ripen while you hold
        the posture you started with.</p>
@@ -106,7 +157,10 @@ footer a{color:var(--soft)}
   </div>
 
   <div class="row">
-    <div class="shot"><img src="img/crop-02-mirror.png" alt="The tomato leaning to one side, mirroring a tilted head"></div>
+    <div class="shot mirror" id="mirror">
+      <img src="img/crop-02-mirror.png" alt="The tomato leaning to one side, mirroring a tilted head">
+      <p class="hint"><span class="arrow">→</span> <b>Move your cursor across it.</b> That is roughly what your head does.</p>
+    </div>
     <div>
       <div class="kicker">Fifty times a second</div>
       <h2>It copies your head</h2>
@@ -192,4 +246,53 @@ footer a{color:var(--soft)}
   <a href="https://github.com/moecui22/posturetomato">GitHub</a>
   <span>Collects no data. Makes no network connections.</span>
 </div></footer>
+
+<script>
+(function(){
+  var calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (calm) {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+    return;
+  }
+
+  // Reveal on scroll, once each.
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, {threshold:0.12, rootMargin:'0px 0px -8% 0px'});
+  document.querySelectorAll('.row, .honest, #support').forEach(function(el){
+    el.classList.add('reveal'); io.observe(el);
+  });
+
+  // The mirror shot tracks the pointer. The app negates roll so the tomato
+  // moves the way a mirror would rather than the way a camera would; the same
+  // sign convention is used here, so cursor-right tilts the fruit right.
+  var box = document.getElementById('mirror');
+  if (!box) return;
+  var img = box.querySelector('img');
+  var raf = null, tx = 0, ty = 0;
+
+  function apply(){
+    raf = null;
+    img.style.setProperty('--rot', tx.toFixed(2) + 'deg');
+    img.style.setProperty('--dy',  ty.toFixed(1) + 'px');
+  }
+  function queue(){ if (!raf) raf = requestAnimationFrame(apply); }
+
+  box.addEventListener('pointermove', function(e){
+    var r = box.getBoundingClientRect();
+    var nx = (e.clientX - r.left) / r.width  - 0.5;   // -0.5 … 0.5
+    var ny = (e.clientY - r.top)  / r.height - 0.5;
+    tx = nx * 26;              // roll, capped near the app's own +/-25 degrees
+    ty = Math.max(0, ny) * 26; // only sinking counts; you cannot rise off baseline
+    box.classList.add('live');
+    queue();
+  });
+  box.addEventListener('pointerleave', function(){
+    box.classList.remove('live');   // settle slowly, the way the app eases back
+    tx = 0; ty = 0; queue();
+  });
+})();
+</script>
 </body></html>
