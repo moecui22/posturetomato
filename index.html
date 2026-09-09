@@ -101,9 +101,9 @@ footer a{color:#333}
 
     <div id="fruitwrap">
       <div id="stack">
-        <img id="fruit" src="img/hero-tomato.png"
+        <img id="fruit" src="img/hero-tomato.png?v=3"
              alt="A tomato wearing AirPods, smiling">
-        <img id="vine" src="img/hero-vine.png" alt="" aria-hidden="true">
+        <img id="vine" src="img/hero-vine.png?v=3" alt="" aria-hidden="true">
       </div>
     </div>
 
@@ -313,7 +313,8 @@ footer a{color:#333}
     // Measure from where the fruit actually starts rather than from a guess at
     // the viewport, so the ring is empty at rest however tall the window is.
     if (origin === null) origin = top;
-    var travelled = (origin - top) / (innerHeight * 0.85);
+    var span = Math.max(240, innerHeight * 0.85);
+    var travelled = (origin - top) / span;
     grown = Math.max(grown, Math.max(0, Math.min(1, travelled)));
     vine.style.setProperty('--grow', grown.toFixed(3) + 'turn');
   }
