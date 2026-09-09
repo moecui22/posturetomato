@@ -281,7 +281,12 @@ footer a{color:#333}
       set((e.clientX - cx) / r.width * 46,
           Math.max(0, (e.clientY - cy) / r.height) * 40);
     }, {passive:true});
-    if (btn) btn.textContent = 'What am I looking at?';
+    // Say so up front. A demo nobody realises is live is a demo that does not
+    // work, however well it runs.
+    note.innerHTML = '<b>Move your cursor &mdash; the tomato is already following it.</b><br>' +
+                     'On your Mac it follows your head instead, read from your earbuds. ' +
+                     'Free, forever.';
+    if (btn) btn.remove();
   }
 
   function useTilt(){
