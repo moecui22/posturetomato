@@ -1,350 +1,309 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>PostureTomato — your AirPods already know you're slouching</title>
-<meta name="description" content="Finish the day focused, not aching. PostureTomato turns the AirPods you already own into a gentle posture nudge that never interrupts you.">
+<title>PostureTomato — you've been slouching for an hour</title>
+<meta name="description" content="You sit down to work, lose two hours, and surface with an aching neck. PostureTomato turns the AirPods you already own into a gentle nudge. Free for Mac.">
 <meta property="og:title" content="PostureTomato">
-<meta property="og:description" content="Finish the day focused, not aching.">
-<meta property="og:image" content="https://moecui22.github.io/posturetomato/img/icon.png">
+<meta property="og:description" content="You've been slouching for an hour. Your AirPods could have told you.">
+<meta property="og:image" content="https://moecui22.github.io/posturetomato/img/banner.png">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="img/icon.png">
 <style>
 :root{
-  /* The app's own palette, lifted from Theme.swift. */
-  --paper:#FFF8F0; --card:#FFFFFF; --line:#F0E2D2;
-  --ink:#3A2B22; --soft:#9C8878;
-  --tomato:#C86B5E; --deep:#A85448; --light:#DB8779;
-  --leaf:#7FA88A; --leafdeep:#5C8468; --halo:#E8C4B4;
-  --clay:#C99A6E;
+  --blue:#0066cc; --focus:#0071e3;
+  --white:#ffffff; --parchment:#f5f5f7;
+  --ink:#1d1d1f; --muted:#6e6e73; --hair:#e0e0e0;
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--paper);color:var(--ink);
-     font:17px/1.6 ui-rounded,-apple-system,BlinkMacSystemFont,"SF Pro Rounded",system-ui,sans-serif;
-     -webkit-font-smoothing:antialiased}
-.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
-a{color:var(--deep)}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--white);color:var(--ink);
+  font:400 17px/1.47 "SF Pro Text",system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+  letter-spacing:-.374px;-webkit-font-smoothing:antialiased}
+.tile{padding:80px 24px}
+.tile.parch{background:var(--parchment)}
+.inner{max-width:980px;margin:0 auto;text-align:center}
+h1{font:600 56px/1.07 "SF Pro Display",system-ui,-apple-system,sans-serif;
+  letter-spacing:-.28px;margin:0 0 18px}
+h2{font:600 40px/1.10 "SF Pro Display",system-ui,-apple-system,sans-serif;
+  letter-spacing:0;margin:0 0 14px}
+h3{font:600 24px/1.2 "SF Pro Display",system-ui,-apple-system,sans-serif;margin:0 0 8px}
+.lead{font:400 28px/1.14 "SF Pro Display",system-ui,-apple-system,sans-serif;
+  letter-spacing:.196px;color:var(--muted);margin:0 auto;max-width:22ch}
+.eyebrow{font:600 17px/1.24 "SF Pro Text",system-ui,sans-serif;
+  color:var(--blue);margin:0 0 12px;letter-spacing:-.374px}
+p.body{font-size:17px;line-height:1.47;color:var(--muted);max-width:56ch;margin:17px auto 0}
+a{color:var(--blue);text-decoration:none}
+a:hover{text-decoration:underline}
 
-/* ---- hero ---- */
-header{padding:88px 0 60px;text-align:center;position:relative;overflow:hidden}
-header:before{content:"";position:absolute;inset:-40% -20% auto;height:620px;
-  background:radial-gradient(ellipse at 50% 0%,rgba(232,196,180,.5),transparent 62%);
-  pointer-events:none}
-.icon{width:132px;height:132px;border-radius:29%;position:relative;
-  box-shadow:0 18px 44px rgba(168,84,72,.22)}
-h1{font-size:clamp(2.4rem,6vw,3.6rem);line-height:1.08;margin:26px 0 12px;
-   font-weight:700;letter-spacing:-.02em;position:relative}
-.tag{font-size:clamp(1.05rem,2.4vw,1.3rem);color:var(--soft);margin:0 auto;
-     max-width:33ch;position:relative}
-.cta{display:inline-flex;align-items:center;gap:10px;margin-top:34px;
-  background:var(--ink);color:var(--paper);text-decoration:none;
-  padding:15px 30px;border-radius:999px;font-weight:600;position:relative;
-  box-shadow:0 10px 26px rgba(58,43,34,.2)}
-.cta:hover{background:var(--deep)}
-.note{margin-top:14px;font-size:.85rem;color:var(--soft);position:relative}
+/* pills */
+.actions{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin-top:32px}
+.pill{display:inline-block;background:var(--blue);color:#fff;border-radius:9999px;
+  padding:11px 22px;font-size:18px;font-weight:400;border:1px solid var(--blue);
+  cursor:pointer;transition:transform .15s ease}
+.pill:hover{text-decoration:none;filter:brightness(1.06)}
+.pill:active{transform:scale(.95)}
+.pill.ghost{background:transparent;color:var(--blue)}
+.pill:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
 
-/* ---- alternating feature rows ---- */
-.row{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;
-     padding:64px 0;border-top:1px solid var(--line)}
-.row:nth-child(even) .shot{order:2}
-.row h2{font-size:1.75rem;margin:0 0 12px;letter-spacing:-.01em}
-.row p{margin:0;color:var(--soft);font-size:1.05rem}
-.shot img{width:100%;border-radius:20px;display:block;
-  box-shadow:0 14px 40px rgba(58,43,34,.11)}
-.kicker{font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;
-  color:var(--tomato);font-weight:700;margin-bottom:10px}
+/* product renders carry the one shadow that exists */
+.render{filter:drop-shadow(3px 5px 30px rgba(0,0,0,.22));max-width:100%}
+.shot{width:100%;max-width:720px;border-radius:18px;display:block;margin:40px auto 0;
+  box-shadow:rgba(0,0,0,.22) 3px 5px 30px 0}
 
-/* ---- honest box ---- */
-.honest{margin:64px 0;padding:32px 34px;border-radius:22px;
-  background:#fff;border:1px solid var(--line)}
-.honest h2{margin:0 0 10px;font-size:1.25rem}
-.honest p{margin:0;color:var(--soft)}
+/* hero fruit */
+#fruit{width:min(420px,72vw);display:block;margin:40px auto 8px;
+  transform:rotate(var(--rot,0deg)) translateY(var(--dy,0px));
+  transition:transform .55s cubic-bezier(.2,.8,.3,1);will-change:transform}
+#fruit.live{transition:transform .1s linear}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+#fruitwrap{animation:breathe 10s ease-in-out infinite}
+.demonote{font-size:14px;line-height:1.43;color:var(--muted);margin:10px auto 0;max-width:44ch;
+  letter-spacing:-.224px}
+.demonote b{color:var(--ink);font-weight:600}
 
-/* ---- support ---- */
-section#support{border-top:1px solid var(--line);padding:64px 0}
-h2.big{font-size:2rem;margin:0 0 8px;letter-spacing:-.01em}
-.lead{color:var(--soft);margin:0 0 34px}
-.faq{display:grid;grid-template-columns:1fr 1fr;gap:22px 44px}
-.faq dt{font-weight:650;margin-bottom:4px}
-.faq dd{margin:0 0 4px;color:var(--soft);font-size:.97rem}
-.mail{display:inline-block;margin-top:8px;background:var(--card);
-  border:1px solid var(--line);padding:13px 22px;border-radius:12px;
-  text-decoration:none;font-weight:600}
+/* grids */
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px;text-align:left}
+.card{background:var(--white);border:1px solid var(--hair);border-radius:18px;padding:24px}
+.parch .card{background:var(--white)}
+.card p{margin:0;color:var(--muted);font-size:17px;line-height:1.47}
+.faq{display:grid;grid-template-columns:1fr 1fr;gap:24px 48px;text-align:left;margin-top:40px}
+.faq dt{font-weight:600;margin-bottom:4px}
+.faq dd{margin:0;color:var(--muted)}
 
-footer{border-top:1px solid var(--line);padding:38px 0 60px;
-  color:var(--soft);font-size:.87rem;display:flex;gap:20px;flex-wrap:wrap}
-footer a{color:var(--soft)}
+footer{background:var(--parchment);padding:64px 24px;color:#333;font-size:12px}
+footer .inner{text-align:left;display:flex;gap:24px;flex-wrap:wrap;align-items:center}
+footer a{color:#333}
 
-@media (max-width:760px){
-  .row{grid-template-columns:1fr;gap:26px;padding:48px 0}
-  .row:nth-child(even) .shot{order:0}
-  .faq{grid-template-columns:1fr}
-  header{padding:60px 0 40px}
-}
-
-/* ---- motion ---- */
-/* The hero icon breathes on the app's own rhythm: five seconds in, five out.
-   Six breaths a minute, the pace slow-breathing practice settles on — the same
-   cycle the halo uses inside the app. */
-@keyframes breathe{
-  0%,100%{transform:scale(1)}
-  50%{transform:scale(1.045)}
-}
-@keyframes haloPulse{
-  0%,100%{opacity:.34;transform:translate(-50%,-50%) scale(1)}
-  50%{opacity:.62;transform:translate(-50%,-50%) scale(1.16)}
-}
-.iconwrap{position:relative;display:inline-block}
-.iconwrap:before{content:"";position:absolute;left:50%;top:50%;
-  width:190px;height:190px;border-radius:50%;
-  background:radial-gradient(circle,var(--halo),transparent 66%);
-  transform:translate(-50%,-50%);animation:haloPulse 10s ease-in-out infinite;
-  pointer-events:none}
-.icon{animation:breathe 10s ease-in-out infinite;will-change:transform}
-
-/* Scroll reveal — content rises into place once, never on the way back. */
-.reveal{opacity:0;transform:translateY(22px);
-  transition:opacity .7s cubic-bezier(.2,.7,.3,1),transform .7s cubic-bezier(.2,.7,.3,1)}
-.reveal.in{opacity:1;transform:none}
-.row.reveal .shot{transition-delay:.06s}
-
-/* The mirroring shot follows your cursor, because that is the feature. */
-.mirror{perspective:1100px}
-.mirror img{transform:rotate(var(--rot,0deg)) translateY(var(--dy,0px))
-                      scale(var(--sc,1));
-  transition:transform .5s cubic-bezier(.2,.8,.3,1);will-change:transform}
-.mirror.live img{transition:transform .12s linear}
-.hint{margin-top:12px;font-size:.83rem;color:var(--soft);
-  display:flex;align-items:center;gap:7px}
-.hint b{font-weight:650;color:var(--tomato)}
-@keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
-.hint span.arrow{animation:nudge 1.5s ease-in-out infinite}
-
-.cta{transition:transform .18s cubic-bezier(.2,.8,.3,1),background .18s}
-.cta:hover{transform:translateY(-2px)}
-.cta:active{transform:translateY(0)}
-.shot img{transition:transform .5s cubic-bezier(.2,.8,.3,1)}
-.row:not(:has(.mirror)) .shot img:hover{transform:translateY(-6px)}
-
-/* Anyone who has asked the system for less motion gets none of it. */
+@media (max-width:1068px){ h1{font-size:40px} h2{font-size:34px} }
+@media (max-width:834px){ .three{grid-template-columns:1fr} .faq{grid-template-columns:1fr} }
+@media (max-width:640px){ h1{font-size:34px} h2{font-size:28px} .lead{font-size:21px}
+  .tile{padding:48px 20px} }
+@media (max-width:419px){ h1{font-size:28px} }
 @media (prefers-reduced-motion:reduce){
-  .icon,.iconwrap:before,.hint span.arrow{animation:none}
-  .reveal{opacity:1;transform:none;transition:none}
-  .mirror img,.shot img,.cta{transition:none}
+  #fruitwrap{animation:none} #fruit,.pill{transition:none}
 }
-
-.eyebrow{position:relative;font-size:.8rem;letter-spacing:.15em;text-transform:uppercase;
-  color:var(--tomato);font-weight:700;margin:0 0 14px}
-.tag b{color:var(--ink);font-weight:650}
-.how{padding:64px 0;border-top:1px solid var(--line)}
-.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:34px}
-.steps>div{background:var(--card);border:1px solid var(--line);
-  border-radius:20px;padding:28px 26px}
-.steps h3{margin:14px 0 8px;font-size:1.15rem}
-.steps p{margin:0;color:var(--soft);font-size:.97rem}
-.steps .num{display:inline-grid;place-items:center;width:44px;height:44px;
-  border-radius:50%;background:var(--halo);font-size:1.25rem;line-height:1}
-.lab h2{font-size:1.15rem}
-@media (max-width:760px){ .steps{grid-template-columns:1fr} }
 </style></head><body>
 
-<header>
-  <div class="wrap">
-    <span class="iconwrap"><img class="icon" src="img/icon.png" alt="PostureTomato app icon"></span>
+<!-- HERO -->
+<section class="tile">
+  <div class="inner">
     <p class="eyebrow">Your AirPods already know</p>
     <h1>You've been slouching<br>for an hour.</h1>
-    <p class="tag">Nobody told you. Your AirPods could have.
-       <b>PostureTomato</b> turns the earbuds you already own into the gentlest
-       nudge there is — so you finish the day focused, not aching.</p>
-    <a class="cta" href="https://apps.apple.com/us/app/posturetomato/id6810417139">
-       Download on the Mac App Store</a>
-    <p class="note">Free · macOS 14 or later · No account, no tracking</p>
+    <p class="lead">Nobody told you. Your AirPods could have.</p>
+
+    <div id="fruitwrap">
+      <img id="fruit" class="render" src="img/hero-tomato.png"
+           alt="A tomato wearing AirPods, smiling">
+    </div>
+
+    <div class="actions">
+      <a class="pill" href="https://apps.apple.com/us/app/posturetomato/id6810417139">Download free</a>
+      <button class="pill ghost" id="try">Try it right here</button>
+    </div>
+    <p class="demonote" id="note">
+      <b>Free, forever.</b> Works on Mac with AirPods.
+    </p>
   </div>
-</header>
+</section>
 
-<main class="wrap">
+<!-- THE PROBLEM, IN ONE SENTENCE -->
+<section class="tile parch">
+  <div class="inner">
+    <h2>You sit down to work, lose two&nbsp;hours,<br>and surface with an aching neck.</h2>
+    <p class="body">The better the focus, the worse the posture. By the time your body
+       complains, the damage to the afternoon is already done.</p>
+  </div>
+</section>
 
+<!-- MIRROR -->
+<section class="tile">
+  <div class="inner">
+    <p class="eyebrow">The bit everyone shows their friends</p>
+    <h2>It copies your head.</h2>
+    <p class="lead">Lean, and it leans. Slump, and it slumps with you.</p>
+    <img class="shot" src="img/crop-02-mirror.png"
+         alt="The tomato leaning to one side, mirroring a tilted head">
+    <p class="body">Watching a little tomato mimic you is stupidly delightful the first
+       time — and the tenth. Somehow it also fixes your posture.</p>
+  </div>
+</section>
 
-  <section class="how">
-    <h2 class="big" style="text-align:center">Deep work shouldn't cost you your neck</h2>
-    <p class="lead" style="text-align:center;max-width:54ch;margin:0 auto 40px">
-      The better the focus, the worse the posture. Two hours disappear and you
-      surface folded over your desk. This fixes that quietly.</p>
-    <div class="steps">
-      <div><span class="num">🎧</span>
-        <h3>Nothing new to buy</h3>
-        <p>No camera watching you. No band around your chest. No subscription.
-           Just the earbuds already in your ears.</p></div>
-      <div><span class="num">🌿</span>
-        <h3>It never interrupts</h3>
-        <p>No alarms. No pop-ups. No nagging. Your tomato quietly loses its
-           colour, and you glance up when you feel like it.</p></div>
-      <div><span class="num">✨</span>
-        <h3>Your posture, not a textbook's</h3>
+<!-- RIPEN -->
+<section class="tile parch">
+  <div class="inner">
+    <p class="eyebrow">Something to sit up for</p>
+    <h2>Sit well and it ripens.</h2>
+    <p class="lead">Slouch and it stays pale and green.</p>
+    <img class="shot" src="img/crop-05-done.png"
+         alt="A fully ripe tomato inside a complete ring of vine">
+    <p class="body">No alarms. No pop-ups. No nagging. You'll catch yourself
+       straightening up for no reason other than wanting a nicer tomato.
+       That's the point.</p>
+  </div>
+</section>
+
+<!-- FITS YOUR LIFE -->
+<section class="tile">
+  <div class="inner">
+    <h2>It fits how you actually work.</h2>
+    <div class="three">
+      <div class="card"><h3>Nothing new to buy</h3>
+        <p>No camera watching you. No band around your chest. Just the earbuds
+           already in your ears.</p></div>
+      <div class="card"><h3>One earbud is fine</h3>
+        <p>Half of us wear one and keep an ear on the room. It works with one —
+           and your tomato wears one too.</p></div>
+      <div class="card"><h3>Your posture, not a textbook's</h3>
         <p>Sit however you like. That becomes the mark. It only speaks up when
            you've drifted from your own comfortable.</p></div>
     </div>
-  </section>
-
-  <div class="row">
-    <div class="shot mirror" id="mirror">
-      <img src="img/crop-02-mirror.png" alt="The tomato leaning to one side, mirroring a tilted head">
-      <p class="hint"><span class="arrow">&rarr;</span> <b>Move your cursor across it.</b> That is roughly what your head does.</p>
-    </div>
-    <div>
-      <div class="kicker">The bit everyone shows their friends</div>
-      <h2>It copies your head, live</h2>
-      <p>Lean, and it leans. Slump, and it slumps with you. Watching a little
-         tomato mimic you is stupidly delightful the first time — and the tenth.
-         Somehow it also fixes your posture.</p>
-    </div>
   </div>
+</section>
 
-  <div class="row">
-    <div class="shot"><img src="img/crop-05-done.png" alt="A fully ripe tomato inside a complete ring of vine"></div>
-    <div>
-      <div class="kicker">Something to sit up for</div>
-      <h2>Sit well and it ripens</h2>
-      <p>Hold yourself and the fruit deepens to a rich red. Slouch and it stays
-         pale and green. You will catch yourself straightening up for no reason
-         other than wanting a nicer tomato. That's the point.</p>
-    </div>
+<!-- TIMER -->
+<section class="tile parch">
+  <div class="inner">
+    <p class="eyebrow">And yes, it's a proper focus timer</p>
+    <h2>Every session grows something.</h2>
+    <img class="shot" src="img/crop-01-focus.png"
+         alt="A timer running, the vine partly grown around a ripe tomato">
+    <p class="body">Finish, and your tomato is harvested into a crate you can flip
+       back through. Quit halfway and it's squashed into ketchup. You won't want
+       the ketchup.</p>
   </div>
+</section>
 
-  <div class="row">
-    <div class="shot"><img src="img/crop-03-onebud.png" alt="A tomato wearing a single earbud on its right side"></div>
-    <div>
-      <div class="kicker">Works how you actually live</div>
-      <h2>One earbud is enough</h2>
-      <p>Half of us wear one and keep an ear on the room. Fine — it works with
-         one, and your tomato wears one too.</p>
-    </div>
+<!-- PRIVACY, IN PLAIN WORDS -->
+<section class="tile">
+  <div class="inner">
+    <h2>Nobody is watching. Not even me.</h2>
+    <p class="lead">Everything happens on your Mac and stays there.</p>
+    <p class="body">There is no account to make and no email to hand over. The app
+       cannot send anything anywhere — it has no way to reach the internet at all.
+       How you sit, when you work, how long you lasted: that stays on your
+       computer, and I never see any of it.</p>
+    <p class="body"><b>And it's free.</b> Not free-with-a-catch. There is nothing to
+       buy, no subscription, and no ads — now or later.</p>
   </div>
+</section>
 
-  <div class="row">
-    <div class="shot"><img src="img/crop-01-focus.png" alt="A timer running, the vine partly grown around a ripe tomato"></div>
-    <div>
-      <div class="kicker">And yes, it's a proper focus timer</div>
-      <h2>Every session grows something</h2>
-      <p>Finish, and your tomato is harvested into a crate you can flip back
-         through. Quit halfway and it gets squashed into ketchup. You will not
-         want the ketchup.</p>
-    </div>
+<!-- HONESTY -->
+<section class="tile parch">
+  <div class="inner">
+    <h2>What it won't do.</h2>
+    <p class="body">It won't tell you your posture is <em>correct</em> — nothing in
+       your ear can see your spine, and any app promising that is selling you
+       something. What it does is remember how you sat when you were comfortable,
+       and let you know, kindly, when you've wandered off. That turns out to be
+       all most of us needed.</p>
   </div>
+</section>
 
-  <div class="row">
-    <div class="shot"><img src="img/crop-04-rest.png" alt="A resting tomato with no earbuds and a full timer"></div>
-    <div>
-      <div class="kicker">Left them at home?</div>
-      <h2>Still a lovely timer</h2>
-      <p>Everything else keeps working — the crates, the sounds, the whole
-         thing. Your tomato just takes the day off from watching you.</p>
-    </div>
-  </div>
-
-  <div class="honest">
-    <h2>What it will not do</h2>
-    <p>It won't tell you your posture is <em>correct</em> — nothing in your ear
-       can see your spine, and any app promising that is selling you something.
-       What it does is remember how you sat when you were comfortable, and let
-       you know, kindly, when you have wandered off. That turns out to be all
-       most of us needed.</p>
-  </div>
-
-  <section id="support">
-    <h2 class="big">Support</h2>
-    <p class="lead">Questions, bugs, or ideas — mail me and I'll actually reply.</p>
+<!-- SUPPORT -->
+<section class="tile" id="support">
+  <div class="inner">
+    <h2>Questions?</h2>
+    <p class="lead">Mail me and I'll actually reply.</p>
     <dl class="faq">
       <div><dt>Which headphones work?</dt>
-      <dd>AirPods (3rd generation), AirPods Pro (all generations), AirPods Max,
-          and Beats Fit Pro. Earlier AirPods have no motion sensors.</dd></div>
-
-      <div><dt>Can I use just one earbud?</dt>
-      <dd>Yes. The app detects which ear and draws only that bud.</dd></div>
-
+        <dd>AirPods (3rd generation), AirPods Pro, AirPods Max, and Beats Fit Pro.
+            Earlier AirPods have no motion sensors.</dd></div>
       <div><dt>Do I need AirPods at all?</dt>
-      <dd>No. Everything but the mirroring works without them.</dd></div>
-
+        <dd>No. Everything else works without them — you just lose the posture half.</dd></div>
       <div><dt>It says not connected, but they are.</dt>
-      <dd>Motion data only flows while the buds are in your ears. Put them back
-          in and it reconnects on its own within a few seconds.</dd></div>
-
+        <dd>Motion only flows while the buds are in your ears. Put them back in and
+            it reconnects on its own.</dd></div>
       <div><dt>Why did my tomato turn into ketchup?</dt>
-      <dd>Ending a session early squashes it into a sachet. It sits in the
-          drawer for seven days, then expires.</dd></div>
-
+        <dd>Ending a session early squashes it into a sachet. It sits in the drawer
+            for seven days, then expires.</dd></div>
       <div><dt>How do I reset my baseline?</dt>
-      <dd>Recalibrate in Settings, or just start a new session — each one begins
-          with a five-second calibration.</dd></div>
+        <dd>Recalibrate in Settings, or just start a new session — each begins with
+            a five-second calibration.</dd></div>
+      <div><dt>Does it work on iPhone?</dt>
+        <dd>Not yet. PostureTomato is a Mac app today.</dd></div>
     </dl>
-    <a class="mail" href="mailto:mo.eric.cui@gmail.com">mo.eric.cui@gmail.com</a>
-  </section>
-</main>
+    <div class="actions">
+      <a class="pill" href="mailto:mo.eric.cui@gmail.com">mo.eric.cui@gmail.com</a>
+    </div>
+  </div>
+</section>
 
-<footer><div class="wrap" style="display:flex;gap:20px;flex-wrap:wrap;padding:0">
+<footer><div class="inner">
   <span>© 2026 Eric Cui</span>
   <a href="privacy.html">Privacy Policy</a>
   <a href="https://github.com/moecui22/posturetomato">GitHub</a>
-  <span>Collects no data. Makes no network connections.</span>
+  <span>Free. Nothing leaves your Mac.</span>
 </div></footer>
 
 <script>
 (function(){
-  var calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (calm) {
-    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
-    return;
-  }
+  var fruit = document.getElementById('fruit');
+  var btn   = document.getElementById('try');
+  var note  = document.getElementById('note');
+  var calm  = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var raf = null, rot = 0, dy = 0;
 
-  // Reveal on scroll, once each.
-  //
-  // Hiding content and waiting for an observer to un-hide it is a bet: if the
-  // observer never fires the page is simply blank. It does not fire in a
-  // zero-height viewport, and prerendered or background tabs can start that
-  // way. So only hide anything when the API exists, and reveal everything
-  // unconditionally after a short grace period whatever happens.
-  var targets = [].slice.call(document.querySelectorAll('.row, .honest, .how, #support'));
-  function revealAll(){ targets.forEach(function(el){ el.classList.add('in'); }); }
-
-  if (!('IntersectionObserver' in window)) { revealAll(); return; }
-
-  targets.forEach(function(el){ el.classList.add('reveal'); });
-  var io = new IntersectionObserver(function(entries){
-    entries.forEach(function(e){
-      if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
-    });
-  }, {threshold:0.12, rootMargin:'0px 0px -8% 0px'});
-  targets.forEach(function(el){ io.observe(el); });
-
-  setTimeout(revealAll, 2500);
-
-  // The mirror shot tracks the pointer. The app negates roll so the tomato
-  // moves the way a mirror would rather than the way a camera would; the same
-  // sign convention is used here, so cursor-right tilts the fruit right.
-  var box = document.getElementById('mirror');
-  if (!box) return;
-  var img = box.querySelector('img');
-  var raf = null, tx = 0, ty = 0;
-
-  function apply(){
+  function paint(){
     raf = null;
-    if (!img.isConnected) return;
-    img.style.setProperty('--rot', tx.toFixed(2) + 'deg');
-    img.style.setProperty('--dy',  ty.toFixed(1) + 'px');
+    fruit.style.setProperty('--rot', rot.toFixed(2) + 'deg');
+    fruit.style.setProperty('--dy',  dy.toFixed(1) + 'px');
   }
-  function queue(){ if (!raf) raf = requestAnimationFrame(apply); }
+  function queue(){ if (!raf) raf = requestAnimationFrame(paint); }
+  function set(r, d){
+    rot = Math.max(-25, Math.min(25, r));      // the app's own limit
+    dy  = Math.max(0, Math.min(34, d));        // only sinking counts
+    fruit.classList.add('live'); queue();
+  }
+  function rest(){ fruit.classList.remove('live'); rot = 0; dy = 0; queue(); }
 
-  box.addEventListener('pointermove', function(e){
-    var r = box.getBoundingClientRect();
-    var nx = (e.clientX - r.left) / r.width  - 0.5;   // -0.5 … 0.5
-    var ny = (e.clientY - r.top)  / r.height - 0.5;
-    tx = nx * 26;              // roll, capped near the app's own +/-25 degrees
-    ty = Math.max(0, ny) * 26; // only sinking counts; you cannot rise off baseline
-    box.classList.add('live');
-    queue();
+  // Desktop: the pointer stands in for a head.
+  function usePointer(){
+    document.addEventListener('pointermove', function(e){
+      var r = fruit.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > innerHeight) return;   // off screen, ignore
+      var cx = r.left + r.width/2, cy = r.top + r.height/2;
+      set((e.clientX - cx) / r.width * 46, Math.max(0, (e.clientY - cy) / r.height) * 40);
+    }, {passive:true});
+    note.innerHTML = '<b>Move your cursor around.</b> On a Mac the real app reads ' +
+                     'your AirPods instead — this is just a taste of it.';
+  }
+
+  // Phone: the device's own tilt is the closest a web page can get. It is NOT
+  // reading AirPods — no browser can — and the copy says so plainly.
+  function useTilt(){
+    window.addEventListener('deviceorientation', function(e){
+      if (e.gamma == null) return;
+      set(e.gamma * 0.8, Math.max(0, (e.beta || 0) - 35) * 0.7);
+    });
+    note.innerHTML = '<b>Tilt your phone.</b> The app does this with your AirPods, ' +
+                     'so it follows your head instead of your phone.';
+  }
+
+  btn.addEventListener('click', function(){
+    btn.style.display = 'none';
+    var DOE = window.DeviceOrientationEvent;
+    if (DOE && typeof DOE.requestPermission === 'function') {
+      DOE.requestPermission().then(function(state){
+        if (state === 'granted') useTilt(); else usePointer();
+      }).catch(usePointer);
+    } else if (DOE && 'ondeviceorientation' in window && matchMedia('(pointer: coarse)').matches) {
+      useTilt();
+    } else {
+      usePointer();
+    }
   });
-  box.addEventListener('pointerleave', function(){
-    box.classList.remove('live');   // settle slowly, the way the app eases back
-    tx = 0; ty = 0; queue();
-  });
+
+  if (!calm) {
+    // A slow idle sway before anyone touches it, so the hero is never dead.
+    var t0 = Date.now();
+    (function idle(){
+      if (!fruit.classList.contains('live')) {
+        var s = (Date.now() - t0) / 1000;
+        fruit.style.setProperty('--rot', (Math.sin(s * 0.5) * 2.2).toFixed(2) + 'deg');
+      }
+      setTimeout(idle, 60);
+    })();
+  }
 })();
 </script>
 </body></html>
