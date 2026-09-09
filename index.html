@@ -51,10 +51,18 @@ a:hover{text-decoration:underline}
   box-shadow:rgba(0,0,0,.22) 3px 5px 30px 0}
 
 /* hero fruit */
-#fruit{width:min(420px,72vw);display:block;margin:40px auto 8px;
+#stack{position:relative;width:min(420px,72vw);margin:40px auto 8px;
   transform:rotate(var(--rot,0deg)) translateY(var(--dy,0px));
   transition:transform .55s cubic-bezier(.2,.8,.3,1);will-change:transform}
-#fruit.live{transition:transform .1s linear}
+#stack.live{transition:transform .1s linear}
+#fruit{display:block;width:100%}
+/* The vine layer is the same render with its ring grown. Sweeping a conic mask
+   over it reveals the vine clockwise from twelve o'clock, exactly the way the
+   app grows it — and because the fruit underneath is identical and aligned, the
+   wedge shows nothing but the vine. */
+#vine{position:absolute;inset:0;width:100%;
+  -webkit-mask-image:conic-gradient(#000 0turn,#000 var(--grow,0turn),transparent 0);
+  mask-image:conic-gradient(#000 0turn,#000 var(--grow,0turn),transparent 0)}
 @keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
 #fruitwrap{animation:breathe 10s ease-in-out infinite}
 .demonote{font-size:14px;line-height:1.43;color:var(--muted);margin:10px auto 0;max-width:44ch;
@@ -92,8 +100,11 @@ footer a{color:#333}
     <p class="lead">Nobody told you. Your AirPods could have.</p>
 
     <div id="fruitwrap">
-      <img id="fruit" src="img/hero-tomato.png"
-           alt="A tomato wearing AirPods, smiling">
+      <div id="stack">
+        <img id="fruit" src="img/hero-tomato.png"
+             alt="A tomato wearing AirPods, smiling">
+        <img id="vine" src="img/hero-vine.png" alt="" aria-hidden="true">
+      </div>
     </div>
 
     <div class="actions">
@@ -237,7 +248,8 @@ footer a{color:#333}
 
 <script>
 (function(){
-  var fruit = document.getElementById('fruit');
+  var fruit = document.getElementById('stack');
+  var vine  = document.getElementById('vine');
   var btn   = document.getElementById('try');
   var note  = document.getElementById('note');
   var calm  = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -292,6 +304,19 @@ footer a{color:#333}
       usePointer();
     }
   });
+
+    // The vine grows as the hero scrolls away, and stays grown.
+  var grown = 0;
+  function growVine(){
+    var wrap = document.getElementById('fruitwrap');
+    var r = wrap.getBoundingClientRect();
+    var travelled = (innerHeight * 0.62 - r.top) / (innerHeight * 0.95);
+    grown = Math.max(grown, Math.max(0, Math.min(1, travelled)));
+    vine.style.setProperty('--grow', grown.toFixed(3) + 'turn');
+  }
+  addEventListener('scroll', growVine, {passive:true});
+  addEventListener('resize', growVine);
+  growVine();
 
   if (!calm) {
     // A slow idle sway before anyone touches it, so the hero is never dead.
