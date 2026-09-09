@@ -1,10 +1,10 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>PostureTomato — a focus timer that sits up straight</title>
-<meta name="description" content="A Pomodoro timer whose tomato copies your head. Wear AirPods and watch the fruit ripen while you hold the posture you settled into.">
+<title>PostureTomato — your AirPods can feel you slouch</title>
+<meta name="description" content="Your AirPods have motion sensors almost nothing uses. PostureTomato reads your head 50 times a second and turns it into a posture monitor, inside a focus timer.">
 <meta property="og:title" content="PostureTomato">
-<meta property="og:description" content="A focus timer that sits up straight.">
+<meta property="og:description" content="Your AirPods have motion sensors. They can feel you slouch.">
 <meta property="og:image" content="https://moecui22.github.io/posturetomato/img/icon.png">
 <link rel="icon" href="img/icon.png">
 <style>
@@ -130,14 +130,30 @@ footer a{color:var(--soft)}
   .reveal{opacity:1;transform:none;transition:none}
   .mirror img,.shot img,.cta{transition:none}
 }
+
+.eyebrow{position:relative;font-size:.8rem;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--tomato);font-weight:700;margin:0 0 14px}
+.tag b{color:var(--ink);font-weight:650}
+.how{padding:64px 0;border-top:1px solid var(--line)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:34px}
+.steps>div{background:var(--card);border:1px solid var(--line);
+  border-radius:20px;padding:28px 26px}
+.steps h3{margin:14px 0 8px;font-size:1.15rem}
+.steps p{margin:0;color:var(--soft);font-size:.97rem}
+.steps .num{display:inline-grid;place-items:center;width:34px;height:34px;
+  border-radius:50%;background:var(--tomato);color:#fff;font-weight:700;font-size:.95rem}
+.lab h2{font-size:1.15rem}
+@media (max-width:760px){ .steps{grid-template-columns:1fr} }
 </style></head><body>
 
 <header>
   <div class="wrap">
     <span class="iconwrap"><img class="icon" src="img/icon.png" alt="PostureTomato app icon"></span>
-    <h1>A focus timer that<br>sits up straight.</h1>
-    <p class="tag">Wear AirPods. Settle in. Watch the fruit ripen while you hold
-       the posture you started with.</p>
+    <p class="eyebrow">Your AirPods have motion sensors</p>
+    <h1>They can feel<br>you slouch.</h1>
+    <p class="tag">Almost nothing uses them. PostureTomato reads your head
+       <b>fifty times a second</b> and turns it into the quietest posture
+       monitor you own — hidden inside a focus timer.</p>
     <a class="cta" href="https://apps.apple.com/us/app/posturetomato/id6810417139">
        Download on the Mac App Store</a>
     <p class="note">Free · macOS 14 or later · No account, no tracking</p>
@@ -146,27 +162,39 @@ footer a{color:var(--soft)}
 
 <main class="wrap">
 
-  <div class="row">
-    <div class="shot"><img src="img/crop-01-focus.png" alt="A timer running, the vine partly grown around a ripe tomato"></div>
-    <div>
-      <div class="kicker">The vine is time</div>
-      <h2>Pomodoro, grown rather than counted</h2>
-      <p>Start a session and a tomato grows on the vine while you work. The vine
-         is the clock. The fruit is something else entirely.</p>
+
+  <section class="how">
+    <h2 class="big" style="text-align:center">How it actually works</h2>
+    <p class="lead" style="text-align:center;max-width:56ch;margin:0 auto 40px">
+      No camera. No wearable. Nothing new to buy. Just the earbuds already in
+      your ears.</p>
+    <div class="steps">
+      <div><span class="num">1</span>
+        <h3>Settle in</h3>
+        <p>Five seconds of calibration captures whatever position is comfortable
+           for you. That becomes your baseline — not some textbook posture.</p></div>
+      <div><span class="num">2</span>
+        <h3>Work</h3>
+        <p>Pitch and roll stream from the buds at <b>50&nbsp;Hz</b> and get
+           compared against your baseline, entirely on your Mac.</p></div>
+      <div><span class="num">3</span>
+        <h3>Glance</h3>
+        <p>Drift and the fruit stays pale. Hold steady and it ripens. You read it
+           in half a second, and nothing ever interrupts you.</p></div>
     </div>
-  </div>
+  </section>
 
   <div class="row">
     <div class="shot mirror" id="mirror">
       <img src="img/crop-02-mirror.png" alt="The tomato leaning to one side, mirroring a tilted head">
-      <p class="hint"><span class="arrow">→</span> <b>Move your cursor across it.</b> That is roughly what your head does.</p>
+      <p class="hint"><span class="arrow">&rarr;</span> <b>Move your cursor across it.</b> That is roughly what your head does.</p>
     </div>
     <div>
-      <div class="kicker">Fifty times a second</div>
-      <h2>It copies your head</h2>
+      <div class="kicker">The part nobody expects</div>
+      <h2>It copies your head, live</h2>
       <p>Lean, and the tomato leans. Sink toward your shoulders and it sinks.
-         AirPods have motion sensors, and this is the most useful thing anyone
-         has done with them.</p>
+         Not an animation on a loop — that is your own head, streaming from your
+         ears fifty times a second.</p>
     </div>
   </div>
 
@@ -176,7 +204,7 @@ footer a{color:var(--soft)}
       <div class="kicker">Ambient, never interrupting</div>
       <h2>Posture ripens the fruit</h2>
       <p>Hold the position you settled into and the tomato ripens. Drift, and it
-         stays pale. You read it out of the corner of your eye — no pop-up ever
+         stays pale. That is the whole trick: a posture reminder that never
          breaks the focus the timer exists to protect.</p>
     </div>
   </div>
@@ -186,8 +214,19 @@ footer a{color:var(--soft)}
     <div>
       <div class="kicker">However you wear them</div>
       <h2>One earbud is enough</h2>
-      <p>The app reads whichever ear you have in, tells you which one it found,
-         and draws only that bud on the tomato.</p>
+      <p>Most people walk around with one in. The app reads whichever ear it
+         finds, tells you which one, and draws only that bud.</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="shot"><img src="img/crop-01-focus.png" alt="A timer running, the vine partly grown around a ripe tomato"></div>
+    <div>
+      <div class="kicker">And yes, it is a Pomodoro timer</div>
+      <h2>The vine is the clock</h2>
+      <p>Focus and break lengths you choose. Finish a session and the tomato is
+         harvested into your crate; end one early and it is squashed into a
+         ketchup sachet that expires in seven days.</p>
     </div>
   </div>
 
@@ -196,9 +235,21 @@ footer a{color:var(--soft)}
     <div>
       <div class="kicker">No headphones? No problem</div>
       <h2>The timer works on its own</h2>
-      <p>Crates, ketchup drawer, sounds, settings — all of it runs without
-         AirPods. You just don't get the posture half.</p>
+      <p>Crates, drawer, sounds, settings — all of it runs without AirPods. You
+         only lose the posture half.</p>
     </div>
+  </div>
+
+  <div class="honest lab">
+    <h2>🔬 Things we had to measure ourselves</h2>
+    <p>Apple documents the API, not the behaviour. Building this meant finding
+       out that the buds actually stream at <b>50&nbsp;Hz</b>, not the 25&nbsp;Hz
+       repeated all over the internet; that your head rests near
+       <b>−39°</b> of pitch rather than zero, because the sensor sits in your ear
+       and not on the crown of your head — which is why calibration is mandatory
+       and not a nicety; and that there is <b>no magnetometer</b>, so yaw drifts
+       and only pitch and roll can be trusted. There is also no notification when
+       a bud comes out. You find out by noticing the silence.</p>
   </div>
 
   <div class="honest">
@@ -262,7 +313,7 @@ footer a{color:var(--soft)}
   // zero-height viewport, and prerendered or background tabs can start that
   // way. So only hide anything when the API exists, and reveal everything
   // unconditionally after a short grace period whatever happens.
-  var targets = [].slice.call(document.querySelectorAll('.row, .honest, #support'));
+  var targets = [].slice.call(document.querySelectorAll('.row, .honest, .how, #support'));
   function revealAll(){ targets.forEach(function(el){ el.classList.add('in'); }); }
 
   if (!('IntersectionObserver' in window)) { revealAll(); return; }
