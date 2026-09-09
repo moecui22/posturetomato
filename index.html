@@ -256,14 +256,26 @@ footer a{color:var(--soft)}
   }
 
   // Reveal on scroll, once each.
+  //
+  // Hiding content and waiting for an observer to un-hide it is a bet: if the
+  // observer never fires the page is simply blank. It does not fire in a
+  // zero-height viewport, and prerendered or background tabs can start that
+  // way. So only hide anything when the API exists, and reveal everything
+  // unconditionally after a short grace period whatever happens.
+  var targets = [].slice.call(document.querySelectorAll('.row, .honest, #support'));
+  function revealAll(){ targets.forEach(function(el){ el.classList.add('in'); }); }
+
+  if (!('IntersectionObserver' in window)) { revealAll(); return; }
+
+  targets.forEach(function(el){ el.classList.add('reveal'); });
   var io = new IntersectionObserver(function(entries){
     entries.forEach(function(e){
       if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
     });
   }, {threshold:0.12, rootMargin:'0px 0px -8% 0px'});
-  document.querySelectorAll('.row, .honest, #support').forEach(function(el){
-    el.classList.add('reveal'); io.observe(el);
-  });
+  targets.forEach(function(el){ io.observe(el); });
+
+  setTimeout(revealAll, 2500);
 
   // The mirror shot tracks the pointer. The app negates roll so the tomato
   // moves the way a mirror would rather than the way a camera would; the same
@@ -275,6 +287,7 @@ footer a{color:var(--soft)}
 
   function apply(){
     raf = null;
+    if (!img.isConnected) return;
     img.style.setProperty('--rot', tx.toFixed(2) + 'deg');
     img.style.setProperty('--dy',  ty.toFixed(1) + 'px');
   }
