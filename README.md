@@ -4,9 +4,9 @@
 
 # 🍅 PostureTomato
 
-### A focus timer that sits up straight.
+### You've been slouching for an hour. Nobody told you.
 
-Wear AirPods. Settle in. Watch the fruit ripen while you hold the posture you started with.
+**Your AirPods could have.** PostureTomato turns the earbuds you already own into the gentlest nudge there is — so you finish the day focused, not aching.
 
 **[→ posturetomato website](https://moecui22.github.io/posturetomato/)** · macOS 14+ · Free · No account, no tracking
 
@@ -16,27 +16,29 @@ Wear AirPods. Settle in. Watch the fruit ripen while you hold the posture you st
 
 <img src="img/crop-02-mirror.png" width="100%" alt="The tomato leaning, mirroring a tilted head">
 
-## 🌱 What it does
+## 🌱 Deep work shouldn't cost you your neck
 
-A Pomodoro timer with a second job.
+The better the focus, the worse the posture. Two hours vanish and you surface folded over your desk.
 
-Start a session and a tomato grows on the vine while you work — **the vine is the clock.** Wear AirPods and something else happens: the tomato mirrors your head. Lean and it leans. Sink toward your shoulders and it sinks. Fifty times a second.
+**It copies your head.** Lean and it leans. Slump and it slumps with you. Watching a little tomato mimic you is stupidly delightful the first time — and the tenth. Somehow it also fixes your posture.
 
-**Posture ripens the fruit.** Hold the position you settled into and the tomato ripens. Drift, and it stays pale. You read it out of the corner of your eye — no pop-up ever interrupts the focus the timer exists to protect.
+**Sit well and it ripens.** Hold yourself and the fruit deepens to a rich red. Slouch and it stays pale and green. You'll catch yourself straightening up for no reason other than wanting a nicer tomato. That's the point.
 
-Finish a session and it's harvested into your crate. 🥫 End early and it's squashed into a ketchup sachet, which sits in the drawer for seven days and then expires.
+**It never interrupts.** No alarms. No pop-ups. No nagging. Your tomato quietly loses its colour, and you glance up when you feel like it.
+
+Finish a session and it's harvested into a crate you can flip back through. 🥫 Quit halfway and it's squashed into ketchup. You won't want the ketchup.
 
 ## ✨ Features
 
 | | |
 |---|---|
-| ⏱️ | Pomodoro timer, focus and break lengths you choose |
-| 🎧 | Live head-position mirroring through AirPods motion sensors |
-| 🎯 | Five-second calibration — posture measured against *your* baseline |
-| 🎨 | Ambient feedback through fruit colour, never a notification |
-| 📊 | Posture summary at break time, not during focus |
-| 📦 | Harvest crates for finished sessions, a ketchup drawer for abandoned ones |
-| 🔔 | Hand-synthesised Japanese temple bell and water sounds — no audio files |
+| 🎧 | Your AirPods become a posture sensor — nothing new to buy |
+| 🪞 | A tomato that mimics your head in real time |
+| 🎯 | Sit however *you* like; that becomes the mark |
+| 🌿 | Never interrupts — the fruit just quietly loses its colour |
+| ⏱️ | A proper focus timer, lengths you choose |
+| 📦 | Crates of finished sessions to flip back through |
+| 🔔 | Japanese temple bells, synthesised on the fly — no audio files |
 | 👒 | Tomatoes with hats, glasses and shoes, because why not |
 
 ## 🎧 Requirements
@@ -65,9 +67,9 @@ Things measured while building this, in case they save someone else the trouble:
 
 ## 🍅 A note on honesty
 
-This app does **not** tell you whether your posture is good. It can't — head orientation alone cannot see your spine, and no app claiming otherwise from an earbud is being straight with you.
+It won't tell you your posture is **correct** — nothing in your ear can see your spine, and any app promising that is selling you something.
 
-What it does is notice when you've drifted from the position *you* chose, and show you, gently.
+What it does is remember how you sat when you were comfortable, and let you know, kindly, when you've wandered off. That turns out to be all most of us needed.
 
 ---
 
