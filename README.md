@@ -4,9 +4,9 @@
 
 # 🍅 PostureTomato
 
-### You've been slouching for an hour. Nobody told you.
+### You focused for an hour. Your neck paid for it.
 
-**Your AirPods could have.** PostureTomato turns the earbuds you already own into the gentlest nudge there is — so you finish the day focused, not aching.
+**Keep both.** The earbuds already in your ears can tell you when one is costing the other — so you finish the day focused *and* upright.
 
 **[→ posturetomato website](https://moecui22.github.io/posturetomato/)** · macOS 14+ · Free · No account, no tracking
 
@@ -16,9 +16,9 @@
 
 <img src="img/crop-02-mirror.png" width="100%" alt="The tomato leaning, mirroring a tilted head">
 
-## 🌱 Deep work shouldn't cost you your neck
+## 🌱 The better your focus, the worse your posture
 
-The better the focus, the worse the posture. Two hours vanish and you surface folded over your desk.
+Every deep hour at a desk is spent slowly folding forward, and you only find out when your neck tells you — long after you could have done anything about it. Focus and posture pull against each other, and until now you could only really have one.
 
 **It copies your head.** Lean and it leans. Slump and it slumps with you. Watching a little tomato mimic you is stupidly delightful the first time — and the tenth. Somehow it also fixes your posture.
 
