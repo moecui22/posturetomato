@@ -237,8 +237,9 @@ footer a{color:#333}
         <dd>Not yet. PostureTomato is a Mac app today.</dd></div>
     </dl>
     <div class="actions">
-      <a class="pill" href="mailto:mo.eric.cui@gmail.com">mo.eric.cui@gmail.com</a>
+      <button class="pill" id="contact"><span aria-hidden="true">✉&#65039;</span>&nbsp; Contact us</button>
     </div>
+    <p class="demonote" id="contactnote"></p>
   </div>
 </section>
 
@@ -251,74 +252,74 @@ footer a{color:#333}
 
 <script>
 (function(){
-  var fruit = document.getElementById('stack');
+  var stack = document.getElementById('stack');
   var vine  = document.getElementById('vine');
   var btn   = document.getElementById('try');
   var note  = document.getElementById('note');
   var calm  = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var raf = null, rot = 0, dy = 0;
+  var touch = window.matchMedia('(pointer: coarse)').matches;
+  var engaged = false;
 
-  function paint(){
-    raf = null;
-    fruit.style.setProperty('--rot', rot.toFixed(2) + 'deg');
-    fruit.style.setProperty('--dy',  dy.toFixed(1) + 'px');
+  // Written straight to the element rather than batched through
+  // requestAnimationFrame. A dropped frame — a backgrounded tab, low power
+  // mode — used to leave the pending-frame flag set forever, and every later
+  // update was silently discarded with no way to recover.
+  function set(rot, dy){
+    stack.style.setProperty('--rot', Math.max(-25, Math.min(25, rot)).toFixed(2) + 'deg');
+    stack.style.setProperty('--dy',  Math.max(0, Math.min(34, dy)).toFixed(1) + 'px');
+    if (!engaged){ engaged = true; stack.classList.add('live'); }
   }
-  function queue(){ if (!raf) raf = requestAnimationFrame(paint); }
-  function set(r, d){
-    rot = Math.max(-25, Math.min(25, r));      // the app's own limit
-    dy  = Math.max(0, Math.min(34, d));        // only sinking counts
-    fruit.classList.add('live'); queue();
-  }
-  function rest(){ fruit.classList.remove('live'); rot = 0; dy = 0; queue(); }
 
-  // Desktop: the pointer stands in for a head.
-  function usePointer(){
+  // Desktop: the pointer stands in for a head. Live from the start — asking
+  // someone to press a button before anything moves means most people never
+  // see it move at all.
+  if (!touch) {
     document.addEventListener('pointermove', function(e){
-      var r = fruit.getBoundingClientRect();
-      if (r.bottom < 0 || r.top > innerHeight) return;   // off screen, ignore
-      var cx = r.left + r.width/2, cy = r.top + r.height/2;
-      set((e.clientX - cx) / r.width * 46, Math.max(0, (e.clientY - cy) / r.height) * 40);
+      var r = stack.getBoundingClientRect();
+      if (!r.width) return;
+      var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+      set((e.clientX - cx) / r.width * 46,
+          Math.max(0, (e.clientY - cy) / r.height) * 40);
     }, {passive:true});
-    note.innerHTML = '<b>Move your cursor around.</b> On a Mac the real app reads ' +
-                     'your AirPods instead — this is just a taste of it.';
+    if (btn) btn.textContent = 'What am I looking at?';
   }
 
-  // Phone: the device's own tilt is the closest a web page can get. It is NOT
-  // reading AirPods — no browser can — and the copy says so plainly.
   function useTilt(){
     window.addEventListener('deviceorientation', function(e){
       if (e.gamma == null) return;
       set(e.gamma * 0.8, Math.max(0, (e.beta || 0) - 35) * 0.7);
     });
-    note.innerHTML = '<b>Tilt your phone.</b> The app does this with your AirPods, ' +
+    note.innerHTML = '<b>Tilt your phone.</b> The app does this with your earbuds, ' +
                      'so it follows your head instead of your phone.';
   }
 
-  btn.addEventListener('click', function(){
-    btn.style.display = 'none';
+  if (btn) btn.addEventListener('click', function(){
     var DOE = window.DeviceOrientationEvent;
-    if (DOE && typeof DOE.requestPermission === 'function') {
+    if (touch && DOE && typeof DOE.requestPermission === 'function') {
       DOE.requestPermission().then(function(state){
-        if (state === 'granted') useTilt(); else usePointer();
-      }).catch(usePointer);
-    } else if (DOE && 'ondeviceorientation' in window && matchMedia('(pointer: coarse)').matches) {
-      useTilt();
+        if (state === 'granted'){ btn.style.display = 'none'; useTilt(); }
+        else note.innerHTML = '<b>No motion access.</b> The app itself never needs it — ' +
+                              'it reads your earbuds, not your phone.';
+      }).catch(function(){});
+    } else if (touch && DOE && 'ondeviceorientation' in window) {
+      btn.style.display = 'none'; useTilt();
     } else {
-      usePointer();
+      btn.style.display = 'none';
+      note.innerHTML = '<b>Move your cursor around — the tomato is following it.</b> ' +
+                       'On a Mac the app follows your head instead, read from your earbuds.';
     }
   });
 
-    // The vine grows as the hero scrolls away, and stays grown.
+  if (touch && btn) btn.textContent = 'Tilt your phone to try it';
+
+  // The vine grows as the hero scrolls away, and stays grown.
   var grown = 0, origin = null;
   function growVine(){
     var wrap = document.getElementById('fruitwrap');
     var top = wrap.getBoundingClientRect().top;
-    // Measure from where the fruit actually starts rather than from a guess at
-    // the viewport, so the ring is empty at rest however tall the window is.
     if (origin === null) origin = top;
     var span = Math.max(240, innerHeight * 0.85);
-    var travelled = (origin - top) / span;
-    grown = Math.max(grown, Math.max(0, Math.min(1, travelled)));
+    grown = Math.max(grown, Math.max(0, Math.min(1, (origin - top) / span)));
     vine.style.setProperty('--grow', grown.toFixed(3) + 'turn');
   }
   addEventListener('scroll', growVine, {passive:true});
@@ -326,16 +327,27 @@ footer a{color:#333}
   growVine();
 
   if (!calm) {
-    // A slow idle sway before anyone touches it, so the hero is never dead.
     var t0 = Date.now();
     (function idle(){
-      if (!fruit.classList.contains('live')) {
-        var s = (Date.now() - t0) / 1000;
-        fruit.style.setProperty('--rot', (Math.sin(s * 0.5) * 2.2).toFixed(2) + 'deg');
+      if (!engaged) {
+        stack.style.setProperty('--rot',
+          (Math.sin((Date.now() - t0) / 1000 * 0.5) * 2.2).toFixed(2) + 'deg');
       }
       setTimeout(idle, 60);
     })();
   }
+
+  // The address is assembled at click time so it is not sitting in the page
+  // source for scrapers to harvest.
+  var contact = document.getElementById('contact');
+  if (contact) contact.addEventListener('click', function(){
+    var who = ['mo','eric','cui'].join('.');
+    var where = 'gmail' + '.' + 'com';
+    location.href = 'mailto:' + who + '@' + where + '?subject=' +
+                    encodeURIComponent('PostureTomato');
+    document.getElementById('contactnote').textContent =
+      'Your mail app should be opening. If nothing happened, the button copies nothing — just reply here from your own mail.';
+  });
 })();
 </script>
 </body></html>
