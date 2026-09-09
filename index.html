@@ -306,11 +306,14 @@ footer a{color:#333}
   });
 
     // The vine grows as the hero scrolls away, and stays grown.
-  var grown = 0;
+  var grown = 0, origin = null;
   function growVine(){
     var wrap = document.getElementById('fruitwrap');
-    var r = wrap.getBoundingClientRect();
-    var travelled = (innerHeight * 0.62 - r.top) / (innerHeight * 0.95);
+    var top = wrap.getBoundingClientRect().top;
+    // Measure from where the fruit actually starts rather than from a guess at
+    // the viewport, so the ring is empty at rest however tall the window is.
+    if (origin === null) origin = top;
+    var travelled = (origin - top) / (innerHeight * 0.85);
     grown = Math.max(grown, Math.max(0, Math.min(1, travelled)));
     vine.style.setProperty('--grow', grown.toFixed(3) + 'turn');
   }
