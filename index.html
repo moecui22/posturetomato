@@ -2,356 +2,168 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>PostureTomato — focus for an hour without paying for it</title>
-<meta name="description" content="Great focus should not cost you your posture. PostureTomato protects both, using nothing but the earbuds already in your ears. Free for Mac.">
+<meta name="description" content="Great focus should not cost you your posture. PostureTomato watches both, using nothing but the earbuds already in your ears. Free for Mac.">
 <meta property="og:title" content="PostureTomato">
 <meta property="og:description" content="You focused for an hour. Your neck paid for it. Keep both.">
 <meta property="og:image" content="https://moecui22.github.io/posturetomato/img/banner.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="img/icon.png">
 <style>
-:root{
-  --blue:#0066cc; --focus:#0071e3;
-  --white:#ffffff; --parchment:#f5f5f7;
-  --ink:#1d1d1f; --muted:#6e6e73; --hair:#e0e0e0;
-}
+:root{--blue:#0066cc;--focus:#0071e3;--ink:#1d1d1f;--muted:#6e6e73;
+      --parchment:#f5f5f7;--hair:#e0e0e0}
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--white);color:var(--ink);
+body{margin:0;background:#fff;color:var(--ink);
   font:400 17px/1.47 "SF Pro Text",system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
   letter-spacing:-.374px;-webkit-font-smoothing:antialiased}
-.tile{padding:80px 24px}
-.tile.parch{background:var(--parchment)}
-.inner{max-width:980px;margin:0 auto;text-align:center}
+.wrap{max-width:980px;margin:0 auto;padding:0 24px;text-align:center}
+header{padding:72px 0 88px}
+.eyebrow{font:600 17px/1.24 inherit;color:var(--blue);margin:0 0 12px}
 h1{font:600 56px/1.07 "SF Pro Display",system-ui,-apple-system,sans-serif;
-  letter-spacing:-.28px;margin:0 0 18px}
-h2{font:600 40px/1.10 "SF Pro Display",system-ui,-apple-system,sans-serif;
-  letter-spacing:0;margin:0 0 14px}
-h3{font:600 24px/1.2 "SF Pro Display",system-ui,-apple-system,sans-serif;margin:0 0 8px}
+  letter-spacing:-.28px;margin:0 0 16px}
 .lead{font:400 28px/1.14 "SF Pro Display",system-ui,-apple-system,sans-serif;
-  letter-spacing:.196px;color:var(--muted);margin:0 auto;max-width:22ch}
-.eyebrow{font:600 17px/1.24 "SF Pro Text",system-ui,sans-serif;
-  color:var(--blue);margin:0 0 12px;letter-spacing:-.374px}
-p.body{font-size:17px;line-height:1.47;color:var(--muted);max-width:56ch;margin:17px auto 0}
-a{color:var(--blue);text-decoration:none}
-a:hover{text-decoration:underline}
+  letter-spacing:.196px;color:var(--muted);margin:0 auto;max-width:24ch}
 
-/* pills */
-.actions{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin-top:32px}
-.pill{display:inline-block;background:var(--blue);color:#fff;border-radius:9999px;
-  padding:11px 22px;font-size:18px;font-weight:400;border:1px solid var(--blue);
-  cursor:pointer;transition:transform .15s ease}
+/* the demo */
+#stage{position:relative;width:min(440px,78vw);aspect-ratio:1;margin:36px auto 0}
+#stage img{position:absolute;inset:0;width:100%;height:100%;
+  transform:rotate(var(--rot,0deg)) translateY(var(--dy,0px));
+  transition:transform .6s linear}
+#ripe{opacity:var(--ripe,1);transition:transform .6s linear,opacity .6s linear}
+#vine{-webkit-mask-image:conic-gradient(#000 0turn,#000 var(--grow,0turn),transparent 0);
+      mask-image:conic-gradient(#000 0turn,#000 var(--grow,0turn),transparent 0);
+      transform:none}
+.caption{min-height:2.6em;margin:8px auto 0;max-width:34ch;color:var(--muted);
+  font-size:17px;transition:opacity .35s}
+.caption b{color:var(--ink);font-weight:600}
+
+.actions{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-top:34px}
+.pill{display:inline-block;background:var(--blue);color:#fff;border:1px solid var(--blue);
+  border-radius:9999px;padding:11px 22px;font-size:18px;font-weight:400;cursor:pointer;
+  font-family:inherit;transition:transform .15s ease}
 .pill:hover{text-decoration:none;filter:brightness(1.06)}
 .pill:active{transform:scale(.95)}
 .pill.ghost{background:transparent;color:var(--blue)}
 .pill:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
+.fine{margin-top:16px;font-size:14px;color:var(--muted);letter-spacing:-.224px}
 
-/* product renders carry the one shadow that exists */
-.render{filter:drop-shadow(3px 5px 30px rgba(0,0,0,.22));max-width:100%}
-.shot{width:100%;max-width:720px;border-radius:18px;display:block;margin:40px auto 0;
-  box-shadow:rgba(0,0,0,.22) 3px 5px 30px 0}
-
-/* hero fruit */
-#stack{position:relative;width:min(420px,72vw);margin:40px auto 8px;
-  transform:rotate(var(--rot,0deg)) translateY(var(--dy,0px));
-  transition:transform .55s cubic-bezier(.2,.8,.3,1);will-change:transform}
-#stack.live{transition:transform .1s linear}
-#fruit{display:block;width:100%}
-/* The vine layer is the same render with its ring grown. Sweeping a conic mask
-   over it reveals the vine clockwise from twelve o'clock, exactly the way the
-   app grows it — and because the fruit underneath is identical and aligned, the
-   wedge shows nothing but the vine. */
-#vine{position:absolute;inset:0;width:100%;
-  -webkit-mask-image:conic-gradient(#000 0turn,#000 var(--grow,0turn),transparent 0);
-  mask-image:conic-gradient(#000 0turn,#000 var(--grow,0turn),transparent 0)}
-@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
-#fruitwrap{animation:breathe 10s ease-in-out infinite}
-.demonote{font-size:14px;line-height:1.43;color:var(--muted);margin:10px auto 0;max-width:44ch;
-  letter-spacing:-.224px}
-.demonote b{color:var(--ink);font-weight:600}
-
-/* grids */
-.three{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px;text-align:left}
-.card{background:var(--white);border:1px solid var(--hair);border-radius:18px;padding:24px}
-.parch .card{background:var(--white)}
-.card p{margin:0;color:var(--muted);font-size:17px;line-height:1.47}
-.faq{display:grid;grid-template-columns:1fr 1fr;gap:24px 48px;text-align:left;margin-top:40px}
+#qa{background:var(--parchment);padding:0;overflow:hidden;max-height:0;
+    transition:max-height .45s ease}
+#qa.open{max-height:1400px;padding:64px 0}
+.faq{display:grid;grid-template-columns:1fr 1fr;gap:24px 48px;text-align:left;
+     max-width:980px;margin:0 auto;padding:0 24px}
 .faq dt{font-weight:600;margin-bottom:4px}
 .faq dd{margin:0;color:var(--muted)}
-
-footer{background:var(--parchment);padding:64px 24px;color:#333;font-size:12px}
-footer .inner{text-align:left;display:flex;gap:24px;flex-wrap:wrap;align-items:center}
+footer{background:var(--parchment);padding:40px 24px;color:#333;font-size:12px;
+  display:flex;gap:20px;justify-content:center;flex-wrap:wrap}
 footer a{color:#333}
+a{color:var(--blue);text-decoration:none}
 
-@media (max-width:1068px){ h1{font-size:40px} h2{font-size:34px} }
-@media (max-width:834px){ .three{grid-template-columns:1fr} .faq{grid-template-columns:1fr} }
-@media (max-width:640px){ h1{font-size:34px} h2{font-size:28px} .lead{font-size:21px}
-  .tile{padding:48px 20px} }
-@media (max-width:419px){ h1{font-size:28px} }
-@media (prefers-reduced-motion:reduce){
-  #fruitwrap{animation:none} #fruit,.pill{transition:none}
-}
+@media (max-width:1068px){h1{font-size:40px}}
+@media (max-width:834px){.faq{grid-template-columns:1fr}}
+@media (max-width:640px){h1{font-size:34px}.lead{font-size:21px}header{padding:48px 0 60px}}
+@media (prefers-reduced-motion:reduce){#stage img{transition:none}}
 </style></head><body>
 
-<!-- HERO -->
-<section class="tile">
-  <div class="inner">
+<header>
+  <div class="wrap">
     <p class="eyebrow">Focus is only half of it</p>
     <h1>You focused for an hour.<br>Your neck paid for it.</h1>
-    <p class="lead">Keep both. The earbuds already in your ears can tell you when
-       one is costing the other.</p>
+    <p class="lead">Keep both. Free, for Mac.</p>
 
-    <div id="fruitwrap">
-      <div id="stack">
-        <img id="fruit" src="img/hero-tomato.png?v=3"
-             alt="A tomato wearing AirPods, smiling">
-        <img id="vine" src="img/hero-vine.png?v=3" alt="" aria-hidden="true">
-      </div>
+    <div id="stage">
+      <img id="pale" src="img/web-pale.png?v=4" alt="">
+      <img id="ripe" src="img/web-ripe.png?v=4" alt="A tomato wearing AirPods">
+      <img id="vine" src="img/web-vine.png?v=4" alt="" aria-hidden="true">
     </div>
+    <p class="caption" id="cap"></p>
 
     <div class="actions">
-      <a class="pill" href="https://apps.apple.com/us/app/posturetomato/id6810417139">Download free</a>
-      <button class="pill ghost" id="try">Try it right here</button>
+      <a class="pill" href="https://apps.apple.com/us/app/posturetomato/id6810417139">Download</a>
+      <button class="pill ghost" id="qabtn">Questions</button>
+      <button class="pill ghost" id="contact">Contact</button>
     </div>
-    <p class="demonote" id="note">
-      <b>Free, forever.</b> Works on Mac with AirPods.
-    </p>
+    <p class="fine">Needs AirPods for the posture part. Nothing leaves your Mac.</p>
   </div>
+</header>
+
+<section id="qa">
+  <dl class="faq">
+    <div><dt>How does it know?</dt>
+      <dd>AirPods have motion sensors. It reads how your head sits, compares it
+          with where you settled at the start, and colours the tomato.</dd></div>
+    <div><dt>Which headphones work?</dt>
+      <dd>AirPods (3rd gen), AirPods Pro, AirPods Max, Beats Fit Pro. One earbud
+          is enough.</dd></div>
+    <div><dt>Do I need AirPods?</dt>
+      <dd>Only for posture. The timer works on its own.</dd></div>
+    <div><dt>Does it judge my posture?</dt>
+      <dd>No. Nothing in your ear can see your spine. It only notices when you
+          drift from how you sat down.</dd></div>
+    <div><dt>What does it cost?</dt>
+      <dd>Nothing. No subscription, no ads, ever.</dd></div>
+    <div><dt>What do you collect?</dt>
+      <dd>Nothing at all. The app cannot reach the internet.</dd></div>
+  </dl>
 </section>
 
-<!-- THE PROBLEM, IN ONE SENTENCE -->
-<section class="tile parch">
-  <div class="inner">
-    <h2>The better your focus,<br>the worse your posture.</h2>
-    <p class="body">Every deep hour at a desk is spent slowly folding forward, and you
-       only find out when your neck tells you — long after you could have done
-       anything about it. Focus and posture pull against each other, and until now
-       you could only really have one.</p>
-  </div>
-</section>
-
-<!-- MIRROR -->
-<section class="tile">
-  <div class="inner">
-    <p class="eyebrow">The bit everyone shows their friends</p>
-    <h2>It copies your head.</h2>
-    <p class="lead">Lean, and it leans. Slump, and it slumps with you.</p>
-    <img class="shot" src="img/crop-02-mirror.png"
-         alt="The tomato leaning to one side, mirroring a tilted head">
-    <p class="body">Watching a little tomato mimic you is stupidly delightful the first
-       time — and the tenth. Somehow it also fixes your posture.</p>
-  </div>
-</section>
-
-<!-- RIPEN -->
-<section class="tile parch">
-  <div class="inner">
-    <p class="eyebrow">Something to sit up for</p>
-    <h2>Sit well and it ripens.</h2>
-    <p class="lead">Slouch and it stays pale and green.</p>
-    <img class="shot" src="img/crop-05-done.png"
-         alt="A fully ripe tomato inside a complete ring of vine">
-    <p class="body">No alarms. No pop-ups. No nagging. You'll catch yourself
-       straightening up for no reason other than wanting a nicer tomato.
-       That's the point.</p>
-  </div>
-</section>
-
-<!-- FITS YOUR LIFE -->
-<section class="tile">
-  <div class="inner">
-    <h2>It fits how you actually work.</h2>
-    <div class="three">
-      <div class="card"><h3>Nothing new to buy</h3>
-        <p>No camera watching you. No band around your chest. Just the earbuds
-           already in your ears.</p></div>
-      <div class="card"><h3>One earbud is fine</h3>
-        <p>Half of us wear one and keep an ear on the room. It works with one —
-           and your tomato wears one too.</p></div>
-      <div class="card"><h3>Your posture, not a textbook's</h3>
-        <p>Sit however you like. That becomes the mark. It only speaks up when
-           you've drifted from your own comfortable.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- TIMER -->
-<section class="tile parch">
-  <div class="inner">
-    <p class="eyebrow">And yes, it's a proper focus timer</p>
-    <h2>Every session grows something.</h2>
-    <img class="shot" src="img/crop-01-focus.png"
-         alt="A timer running, the vine partly grown around a ripe tomato">
-    <p class="body">Finish, and your tomato is harvested into a crate you can flip
-       back through. Quit halfway and it's squashed into ketchup. You won't want
-       the ketchup.</p>
-  </div>
-</section>
-
-<!-- PRIVACY, IN PLAIN WORDS -->
-<section class="tile">
-  <div class="inner">
-    <h2>Nobody is watching. Not even me.</h2>
-    <p class="lead">Everything happens on your Mac and stays there.</p>
-    <p class="body">There is no account to make and no email to hand over. The app
-       cannot send anything anywhere — it has no way to reach the internet at all.
-       How you sit, when you work, how long you lasted: that stays on your
-       computer, and I never see any of it.</p>
-    <p class="body"><b>And it's free.</b> Not free-with-a-catch. There is nothing to
-       buy, no subscription, and no ads — now or later.</p>
-  </div>
-</section>
-
-<!-- HONESTY -->
-<section class="tile parch">
-  <div class="inner">
-    <h2>What it won't do.</h2>
-    <p class="body">It won't tell you your posture is <em>correct</em> — nothing in
-       your ear can see your spine, and any app promising that is selling you
-       something. What it does is remember how you sat when you were comfortable,
-       and let you know, kindly, when you've wandered off. That turns out to be
-       all most of us needed.</p>
-  </div>
-</section>
-
-<!-- SUPPORT -->
-<section class="tile" id="support">
-  <div class="inner">
-    <h2>Questions?</h2>
-    <p class="lead">Mail me and I'll actually reply.</p>
-    <dl class="faq">
-      <div><dt>Which headphones work?</dt>
-        <dd>AirPods (3rd generation), AirPods Pro, AirPods Max, and Beats Fit Pro.
-            Earlier AirPods have no motion sensors.</dd></div>
-      <div><dt>Do I need AirPods at all?</dt>
-        <dd>No. Everything else works without them — you just lose the posture half.</dd></div>
-      <div><dt>It says not connected, but they are.</dt>
-        <dd>Motion only flows while the buds are in your ears. Put them back in and
-            it reconnects on its own.</dd></div>
-      <div><dt>Why did my tomato turn into ketchup?</dt>
-        <dd>Ending a session early squashes it into a sachet. It sits in the drawer
-            for seven days, then expires.</dd></div>
-      <div><dt>How do I reset my baseline?</dt>
-        <dd>Recalibrate in Settings, or just start a new session — each begins with
-            a five-second calibration.</dd></div>
-      <div><dt>Does it work on iPhone?</dt>
-        <dd>Not yet. PostureTomato is a Mac app today.</dd></div>
-    </dl>
-    <div class="actions">
-      <button class="pill" id="contact"><span aria-hidden="true">✉&#65039;</span>&nbsp; Contact us</button>
-    </div>
-    <p class="demonote" id="contactnote"></p>
-  </div>
-</section>
-
-<footer><div class="inner">
+<footer>
   <span>© 2026 Eric Cui</span>
-  <a href="privacy.html">Privacy Policy</a>
+  <a href="privacy.html">Privacy</a>
   <a href="https://github.com/moecui22/posturetomato">GitHub</a>
-  <span>Free. Nothing leaves your Mac.</span>
-</div></footer>
+</footer>
 
 <script>
 (function(){
-  var stack = document.getElementById('stack');
-  var vine  = document.getElementById('vine');
-  var btn   = document.getElementById('try');
-  var note  = document.getElementById('note');
-  var calm  = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var touch = window.matchMedia('(pointer: coarse)').matches;
-  var engaged = false;
+  var ripe = document.getElementById('ripe'),
+      pale = document.getElementById('pale'),
+      vine = document.getElementById('vine'),
+      cap  = document.getElementById('cap'),
+      calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Written straight to the element rather than batched through
-  // requestAnimationFrame. A dropped frame — a backgrounded tab, low power
-  // mode — used to leave the pending-frame flag set forever, and every later
-  // update was silently discarded with no way to recover.
-  function set(rot, dy){
-    stack.style.setProperty('--rot', Math.max(-25, Math.min(25, rot)).toFixed(2) + 'deg');
-    stack.style.setProperty('--dy',  Math.max(0, Math.min(34, dy)).toFixed(1) + 'px');
-    if (!engaged){ engaged = true; stack.classList.add('live'); }
-  }
+  // A session, replayed. Each step is what the app would actually be showing:
+  // posture drifts, the fruit loses its colour, you sit up, it comes back.
+  // Following a cursor would have demonstrated the wrong thing entirely.
+  var script = [
+    {t:2200, rot:  0, dy:  0, ripe:1,    cap:'<b>You settle in.</b> Wherever is comfortable becomes the mark.'},
+    {t:3200, rot: -9, dy: 14, ripe:0.55, cap:'Twenty minutes later, you have sunk a little.'},
+    {t:3200, rot:-17, dy: 26, ripe:0,    cap:'The colour drains away. No alarm. No pop&#8209;up.'},
+    {t:2600, rot:  0, dy:  0, ripe:1,    cap:'<b>You sit up.</b> It ripens again.'}
+  ];
 
-  // Desktop: the pointer stands in for a head. Live from the start — asking
-  // someone to press a button before anything moves means most people never
-  // see it move at all.
-  if (!touch) {
-    document.addEventListener('pointermove', function(e){
-      var r = stack.getBoundingClientRect();
-      if (!r.width) return;
-      var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
-      set((e.clientX - cx) / r.width * 46,
-          Math.max(0, (e.clientY - cy) / r.height) * 40);
-    }, {passive:true});
-    // Say so up front. A demo nobody realises is live is a demo that does not
-    // work, however well it runs.
-    note.innerHTML = '<b>Move your cursor &mdash; the tomato is already following it.</b><br>' +
-                     'On your Mac it follows your head instead, read from your earbuds. ' +
-                     'Free, forever.';
-    if (btn) btn.remove();
-  }
-
-  function useTilt(){
-    window.addEventListener('deviceorientation', function(e){
-      if (e.gamma == null) return;
-      set(e.gamma * 0.8, Math.max(0, (e.beta || 0) - 35) * 0.7);
+  function apply(s){
+    [ripe,pale,vine].forEach(function(el){
+      el.style.setProperty('--rot', s.rot + 'deg');
+      el.style.setProperty('--dy',  s.dy  + 'px');
     });
-    note.innerHTML = '<b>Tilt your phone.</b> The app does this with your earbuds, ' +
-                     'so it follows your head instead of your phone.';
+    ripe.style.setProperty('--ripe', s.ripe);
+    cap.innerHTML = s.cap;
   }
 
-  if (btn) btn.addEventListener('click', function(){
-    var DOE = window.DeviceOrientationEvent;
-    if (touch && DOE && typeof DOE.requestPermission === 'function') {
-      DOE.requestPermission().then(function(state){
-        if (state === 'granted'){ btn.style.display = 'none'; useTilt(); }
-        else note.innerHTML = '<b>No motion access.</b> The app itself never needs it — ' +
-                              'it reads your earbuds, not your phone.';
-      }).catch(function(){});
-    } else if (touch && DOE && 'ondeviceorientation' in window) {
-      btn.style.display = 'none'; useTilt();
-    } else {
-      btn.style.display = 'none';
-      note.innerHTML = '<b>Move your cursor around — the tomato is following it.</b> ' +
-                       'On a Mac the app follows your head instead, read from your earbuds.';
-    }
+  if (calm) { apply(script[0]); vine.style.setProperty('--grow','1turn'); return; }
+
+  var i = 0, elapsed = 0, total = script.reduce(function(a,s){return a+s.t;},0);
+  function step(){
+    apply(script[i]);
+    // The vine is the clock: it fills across one pass and resets with it.
+    elapsed = script.slice(0, i+1).reduce(function(a,s){return a+s.t;},0);
+    vine.style.setProperty('--grow', (elapsed/total).toFixed(3) + 'turn');
+    var wait = script[i].t;
+    i = (i + 1) % script.length;
+    if (i === 0) { setTimeout(function(){ vine.style.setProperty('--grow','0turn'); }, wait - 300); }
+    setTimeout(step, wait);
+  }
+  step();
+
+  // Assembled at click time so the address is not sitting in the page source.
+  document.getElementById('contact').addEventListener('click', function(){
+    location.href = 'mailto:' + ['mo','eric','cui'].join('.') + '@' + 'gmail' + '.com'
+                  + '?subject=' + encodeURIComponent('PostureTomato');
   });
-
-  if (touch && btn) btn.textContent = 'Tilt your phone to try it';
-
-  // The vine grows as the hero scrolls away, and stays grown.
-  var grown = 0, origin = null;
-  function growVine(){
-    var wrap = document.getElementById('fruitwrap');
-    var top = wrap.getBoundingClientRect().top;
-    if (origin === null) origin = top;
-    var span = Math.max(240, innerHeight * 0.85);
-    grown = Math.max(grown, Math.max(0, Math.min(1, (origin - top) / span)));
-    vine.style.setProperty('--grow', grown.toFixed(3) + 'turn');
-  }
-  addEventListener('scroll', growVine, {passive:true});
-  addEventListener('resize', growVine);
-  growVine();
-
-  if (!calm) {
-    var t0 = Date.now();
-    (function idle(){
-      if (!engaged) {
-        stack.style.setProperty('--rot',
-          (Math.sin((Date.now() - t0) / 1000 * 0.5) * 2.2).toFixed(2) + 'deg');
-      }
-      setTimeout(idle, 60);
-    })();
-  }
-
-  // The address is assembled at click time so it is not sitting in the page
-  // source for scrapers to harvest.
-  var contact = document.getElementById('contact');
-  if (contact) contact.addEventListener('click', function(){
-    var who = ['mo','eric','cui'].join('.');
-    var where = 'gmail' + '.' + 'com';
-    location.href = 'mailto:' + who + '@' + where + '?subject=' +
-                    encodeURIComponent('PostureTomato');
-    document.getElementById('contactnote').textContent =
-      'Your mail app should be opening. If nothing happened, the button copies nothing — just reply here from your own mail.';
+  var qa = document.getElementById('qa'), qabtn = document.getElementById('qabtn');
+  qabtn.addEventListener('click', function(){
+    qa.classList.toggle('open');
+    qabtn.textContent = qa.classList.contains('open') ? 'Hide questions' : 'Questions';
+    if (qa.classList.contains('open')) qa.scrollIntoView({behavior:'smooth',block:'start'});
   });
 })();
 </script>
